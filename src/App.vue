@@ -12,7 +12,7 @@
             :text="changeLinkButtonProps(item.link, 'text')"
             dark depressed width=160 @click="linkPage(item.link)") {{ item.text }}
     v-content.main-content.overflow-y-auto
-      transition(appear name="fade")
+      transition(appear name="left-to-right")
         router-view
 </template>
 
@@ -88,6 +88,7 @@ body {
 
   .main-content {
     height: calc(100vh - 54px);
+    position: relative;
 
     &::-webkit-scrollbar {
       width: 0px;
@@ -104,6 +105,24 @@ body {
     .fade-enter,
     .fade-leave-to {
       opacity: 0;
+    }
+
+    .left-to-right-enter-active {
+      transform: translate(0px, 0px);
+      transition: transform 0.5s ease-in-out 0.5s;
+    }
+
+    .left-to-right-leave-active {
+      transform: translate(0px, 0px);
+      transition: transform 0.5s ease-in-out 0s;
+    }
+
+    .left-to-right-enter {
+      transform: translateX(-100vw) translateX(0);
+    }
+
+    .left-to-right-leave-to {
+      transform: translateX(0) translateX(100vw);
     }
   }
 }
