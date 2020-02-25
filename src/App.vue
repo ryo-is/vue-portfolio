@@ -88,6 +88,7 @@ body {
 
   .main-content {
     height: calc(100vh - 54px);
+    position: relative;
 
     &::-webkit-scrollbar {
       width: 0px;
@@ -104,6 +105,14 @@ body {
     .fade-enter,
     .fade-leave-to {
       opacity: 0;
+    }
+
+    .test {
+      background-color: #fff;
+      height: calc(100vh - 54px);
+      position: absolute;
+      top: 0;
+      width: 200px;
     }
   }
 }
