@@ -11,9 +11,12 @@
             :color="changeLinkButtonProps(item.link, 'color')"
             :text="changeLinkButtonProps(item.link, 'text')"
             dark depressed width=160 @click="linkPage(item.link)") {{ item.text }}
+          v-btn(@click="test = !test") test
     v-content.main-content.overflow-y-auto
       transition(appear name="fade")
         router-view
+      transition(appear name="left")
+        .test(v-if="test")
 </template>
 
 <script lang="ts">
@@ -27,7 +30,7 @@ const toolbarItems = [
   { text: 'contact', link: '/contact' }
 ]
 
-const states = { toolbarItems }
+const states = { toolbarItems, test: false }
 
 export default Vue.extend({
   data() {
@@ -107,9 +110,19 @@ body {
       opacity: 0;
     }
 
+    .left-enter-active {
+      transform: translate(calc(100vw + 200px), 0px);
+      transition: transform 1.5s ease-in 0ms;
+    }
+
+    .left-enter {
+      transform: translateX(-100vw) translateX(0);
+    }
+
     .test {
       background-color: #fff;
       height: calc(100vh - 54px);
+      left: -200px;
       position: absolute;
       top: 0;
       width: 200px;
