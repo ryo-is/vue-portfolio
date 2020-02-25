@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home/Index.vue'
+import Info from '../views/info/Index.vue'
+import Skill from '../views/skill/Index.vue'
+import Contact from '../views/contact/Index.vue'
 
 Vue.use(VueRouter)
 
@@ -9,6 +12,21 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/info',
+    name: 'Info',
+    component: Info
+  },
+  {
+    path: '/skill',
+    name: 'Skill',
+    component: Skill
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
   }
 ]
 
