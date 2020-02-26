@@ -12,7 +12,7 @@
             :text="changeLinkButtonProps(item.link, 'text')"
             dark depressed width=160 @click="linkPage(item.link)") {{ item.text }}
     v-content.main-content.overflow-y-auto
-      transition(appear name="left-to-right")
+      transition(appear name="page-transition")
         router-view
 </template>
 
@@ -94,36 +94,40 @@ body {
       width: 0px;
     }
 
-    .fade-enter-active {
+    .page-transition-enter-active {
       transition: opacity 0.5s ease 0.5s;
     }
 
-    .fade-leave-active {
-      transition: opacity 0.5s;
-    }
-
-    .fade-enter,
-    .fade-leave-to {
-      opacity: 0;
-    }
-
-    .left-to-right-enter-active {
-      transform: translate(0px, 0px);
-      transition: transform 0.5s ease-in-out 0.5s;
-    }
-
-    .left-to-right-leave-active {
+    .page-transition-leave-active {
       transform: translate(0px, 0px);
       transition: transform 0.5s ease-in-out 0s;
     }
 
-    .left-to-right-enter {
-      transform: translateX(-100vw) translateX(0);
+    .page-transition-enter {
+      opacity: 0;
     }
 
-    .left-to-right-leave-to {
+    .page-transition-leave-to {
       transform: translateX(0) translateX(100vw);
     }
+
+    // .left-to-right-enter-active {
+    //   transform: translate(0px, 0px);
+    //   transition: transform 0.5s ease-in-out 0.5s;
+    // }
+
+    // .left-to-right-leave-active {
+    //   transform: translate(0px, 0px);
+    //   transition: transform 0.5s ease-in-out 0s;
+    // }
+
+    // .left-to-right-enter {
+    //   transform: translateX(-100vw) translateX(0);
+    // }
+
+    // .left-to-right-leave-to {
+    //   transform: translateX(0) translateX(100vw);
+    // }
   }
 }
 </style>
