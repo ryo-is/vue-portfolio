@@ -28,7 +28,7 @@ const toolbarItems = [
   { text: 'home', link: '/' },
   { text: 'info', link: '/info' },
   { text: 'skill', link: '/skill' },
-  { text: 'contact', link: '/contact' }
+  { text: 'acounts', link: '/acounts' }
 ]
 
 const states = { toolbarItems, ripple: false, x: 0, y: 0 }
