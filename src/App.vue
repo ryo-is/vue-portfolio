@@ -52,7 +52,6 @@ export default Vue.extend({
   },
   methods: {
     onClick(e: MouseEvent) {
-      console.log(e)
       this.ripple = !this.ripple
       this.x = e.pageX
       this.y = e.pageY
