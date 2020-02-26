@@ -12,8 +12,12 @@
             :text="changeLinkButtonProps(item.link, 'text')"
             dark depressed width=160 @click="linkPage(item.link)") {{ item.text }}
     v-content.main-content.overflow-y-auto
-      transition(appear name="page-transition")
-        router-view
+      .content-wrapper(@click="onClick")
+        transition(appear name="page-transition")
+          router-view
+      .ripple-wrapper.overflow-y-hidden
+        transition(appear name="ripple" @after-enter="afterRippleEnter")
+          span.ripple(v-if="ripple", :style="{top: y + 'px', left: x + 'px'}")
 </template>
 
 <script lang="ts">
@@ -27,7 +31,7 @@ const toolbarItems = [
   { text: 'contact', link: '/contact' }
 ]
 
-const states = { toolbarItems }
+const states = { toolbarItems, ripple: false, x: 0, y: 0 }
 
 export default Vue.extend({
   data() {
@@ -47,7 +51,16 @@ export default Vue.extend({
     }
   },
   methods: {
-    linkPage(linkPath: string): void {
+    onClick(e: MouseEvent) {
+      console.log(e)
+      this.ripple = !this.ripple
+      this.x = e.pageX
+      this.y = e.pageY
+    },
+    afterRippleEnter() {
+      this.ripple = false
+    },
+    linkPage(linkPath: string) {
       if (linkPath !== this.$route.path) {
         router.push(linkPath)
       }
@@ -64,19 +77,6 @@ body {
   ::-webkit-scrollbar {
     width: 0px;
   }
-
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
-
-  // &::-webkit-scrollbar-track {
-  //   background-color: $scrollbar-track-color;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background: rgba($scrollbar-thumb-color, .6);
-  //   border-radius: 8px;
-  // }
 }
 
 #app {
@@ -94,40 +94,53 @@ body {
       width: 0px;
     }
 
-    .page-transition-enter-active {
-      transition: opacity 0.5s ease 0.5s;
+    .page-transition {
+      &-enter-active {
+        transition: opacity 0.5s ease 0.5s;
+      }
+
+      &-leave-active {
+        transform: translate(0px, 0px);
+        transition: transform 0.5s ease-in-out 0s;
+      }
+
+      &-enter {
+        opacity: 0;
+      }
+
+      &-leave-to {
+        transform: translateX(0) translateX(100vw);
+      }
     }
+  }
 
-    .page-transition-leave-active {
-      transform: translate(0px, 0px);
-      transition: transform 0.5s ease-in-out 0s;
+  .ripple-wrapper {
+    height: 100%;
+    left: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  .ripple {
+    display: block;
+    width: 180px;
+    height: 180px;
+    border-radius: 120px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-color: rgba(#9e9e9e, 0.4);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(10);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+
+    &-enter {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0);
     }
-
-    .page-transition-enter {
-      opacity: 0;
-    }
-
-    .page-transition-leave-to {
-      transform: translateX(0) translateX(100vw);
-    }
-
-    // .left-to-right-enter-active {
-    //   transform: translate(0px, 0px);
-    //   transition: transform 0.5s ease-in-out 0.5s;
-    // }
-
-    // .left-to-right-leave-active {
-    //   transform: translate(0px, 0px);
-    //   transition: transform 0.5s ease-in-out 0s;
-    // }
-
-    // .left-to-right-enter {
-    //   transform: translateX(-100vw) translateX(0);
-    // }
-
-    // .left-to-right-leave-to {
-    //   transform: translateX(0) translateX(100vw);
-    // }
   }
 }
 </style>
