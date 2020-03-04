@@ -1,0 +1,114 @@
+body {
+  margin: 0;
+
+  // スクロールバー非表示
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+#app {
+  font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ',
+    Meiryo, 'MS Pゴシック', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+
+  .main-content {
+    height: calc(100vh - 54px);
+    position: relative;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+
+    @mixin pageTransition($enterDelay: 0s) {
+      &-enter-active,
+      &-leave-active {
+        transition: opacity 0.5s ease $enterDelay;
+      }
+
+      &-enter,
+      &-leave-to {
+        opacity: 0;
+      }
+    }
+
+    @mixin blackoutCurtain($enterDelay: 0s) {
+      @include pageTransition(0s);
+
+      &-leave-active {
+        transform: translate(0px, 0px);
+        transition: transform 0.5s ease-in-out 0s;
+      }
+
+      &-leave-to {
+        opacity: 1;
+        transform: translateX(0) translateX(100vw);
+      }
+    }
+
+    .page-transition {
+      @include pageTransition(0s);
+    }
+
+    .blackout-curtain {
+      @include blackoutCurtain(0s);
+    }
+
+    .blackout-curtain-after {
+      @include blackoutCurtain(0s);
+
+      &-leave-to {
+        transform: translateX(-100vw) translateX(0vw);
+      }
+    }
+
+    .wrapper {
+      height: 100%;
+      left: 0;
+      pointer-events: none;
+      top: 0;
+      width: 100%;
+    }
+
+    .blackout-curtain {
+      position: absolute;
+
+      .curtain-bar {
+        background-color: #080808;
+        height: 5%;
+        position: absolute;
+        width: 100%;
+      }
+    }
+
+    .ripple-wrapper {
+      position: fixed;
+
+      .ripple {
+        display: block;
+        width: 180px;
+        height: 180px;
+        border-radius: 120px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        background-color: rgba(#9e9e9e, 0.4);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(10);
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+
+        &-enter {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0);
+        }
+      }
+    }
+  }
+}
