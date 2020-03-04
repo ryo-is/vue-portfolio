@@ -15,10 +15,14 @@ v-app
       transition(appear name="page-transition")
         router-view
     .blackout-curtain.wrapper
-      transition(v-for="n of 10" :key="n" appear name="blackout-curtain" @after-enter="afterBlackoutCurtainEnter")
-        .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + '%'}")
-      transition(v-for="n of 10" :key="n" appear name="blackout-curtain-after" @after-enter="afterBlackoutCurtainEnter")
+      //- transition-group(appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
+      //-   .curtain-bar(v-for="n of 10" :key="n" :data-index="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + '%'}")
+      //- transition-group(appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
+      //-   .curtain-bar(v-for="n of 10" :key="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
+      transition(v-for="n of 10" :key="n" appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
+        .curtain-bar(v-if="blackoutCurtain" :data-index="n" :style="{top: (n - 1) * 10 + '%'}")
+      transition(v-for="n of 10" :key="n" appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
         .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
     .ripple-wrapper.wrapper.overflow-y-hidden
-      transition(appear name="ripple" @after-enter="afterRippleEnter")
+      transition(appear name="ripple" @after-enter="rippleAfterEnter")
         span.ripple(v-if="ripple", :style="{top: y + 'px', left: x + 'px'}")

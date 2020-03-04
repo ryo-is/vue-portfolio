@@ -39,7 +39,7 @@ export default Vue.extend({
       this.x = e.pageX
       this.y = e.pageY
     },
-    afterRippleEnter() {
+    rippleAfterEnter() {
       this.ripple = false
     },
     linkPage(linkPath: string) {
@@ -48,8 +48,16 @@ export default Vue.extend({
         router.push(linkPath)
       }
     },
-    afterBlackoutCurtainEnter() {
-      this.blackoutCurtain = false
+    blackoutCurtainAfterEnter(el: HTMLElement) {
+      const delay = Number(el.dataset.index as string) * 1000
+      console.log(delay)
+      setTimeout(() => {
+        this.blackoutCurtain = false
+      }, delay)
+      // this.blackoutCurtain = false
+    },
+    blackoutCurtainLeave() {
+      console.log('leave')
     },
     blackoutCurtainStyle() {
       return ''
