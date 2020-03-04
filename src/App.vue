@@ -15,7 +15,12 @@
       .content-wrapper(@click="onClick")
         transition(appear name="page-transition")
           router-view
-      .ripple-wrapper.overflow-y-hidden
+      .blackout-curtain.wrapper
+        transition(v-for="n of 10" :key="n" appear name="blackout-curtain" @after-enter="afterBlackoutCurtainEnter")
+          .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + '%'}")
+        transition(v-for="n of 10" :key="n" appear name="blackout-curtain-after" @after-enter="afterBlackoutCurtainEnter")
+          .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
+      .ripple-wrapper.wrapper.overflow-y-hidden
         transition(appear name="ripple" @after-enter="afterRippleEnter")
           span.ripple(v-if="ripple", :style="{top: y + 'px', left: x + 'px'}")
 </template>
@@ -31,7 +36,13 @@ const toolbarItems = [
   { text: 'acounts', link: '/acounts' }
 ]
 
-const states = { toolbarItems, ripple: false, x: 0, y: 0 }
+const states = {
+  toolbarItems,
+  blackoutCurtain: false,
+  ripple: false,
+  x: 0,
+  y: 0
+}
 
 export default Vue.extend({
   data() {
@@ -52,7 +63,7 @@ export default Vue.extend({
   },
   methods: {
     onClick(e: MouseEvent) {
-      this.ripple = !this.ripple
+      this.ripple = true
       this.x = e.pageX
       this.y = e.pageY
     },
@@ -61,8 +72,15 @@ export default Vue.extend({
     },
     linkPage(linkPath: string) {
       if (linkPath !== this.$route.path) {
+        this.blackoutCurtain = true
         router.push(linkPath)
       }
+    },
+    afterBlackoutCurtainEnter() {
+      this.blackoutCurtain = false
+    },
+    blackoutCurtainStyle() {
+      return ''
     }
   }
 })
@@ -76,11 +94,15 @@ body {
   ::-webkit-scrollbar {
     width: 0px;
   }
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 }
 
 #app {
   font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ',
-    Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+    Meiryo, 'MS Pゴシック', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -93,52 +115,89 @@ body {
       width: 0px;
     }
 
-    .page-transition {
-      &-enter-active {
-        transition: opacity 0.5s ease 0.5s;
+    @mixin pageTransition($enterDelay: 0s) {
+      &-enter-active,
+      &-leave-active {
+        transition: opacity 0.5s ease $enterDelay;
       }
+
+      &-enter,
+      &-leave-to {
+        opacity: 0;
+      }
+    }
+
+    @mixin blackoutCurtain($enterDelay: 0s) {
+      @include pageTransition(0s);
 
       &-leave-active {
         transform: translate(0px, 0px);
         transition: transform 0.5s ease-in-out 0s;
       }
 
-      &-enter {
-        opacity: 0;
+      &-leave-to {
+        opacity: 1;
+        transform: translateX(0) translateX(100vw);
       }
+    }
+
+    .page-transition {
+      @include pageTransition(0s);
+    }
+
+    .blackout-curtain {
+      @include blackoutCurtain(0s);
+    }
+
+    .blackout-curtain-after {
+      @include blackoutCurtain(0s);
 
       &-leave-to {
-        transform: translateX(0) translateX(100vw);
+        transform: translateX(-100vw) translateX(0vw);
       }
     }
   }
 
-  .ripple-wrapper {
+  .wrapper {
     height: 100%;
     left: 0;
     pointer-events: none;
-    position: fixed;
     top: 0;
     width: 100%;
   }
 
-  .ripple {
-    display: block;
-    width: 180px;
-    height: 180px;
-    border-radius: 120px;
+  .blackout-curtain {
     position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-color: rgba(#9e9e9e, 0.4);
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(10);
-    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
 
-    &-enter {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(0);
+    .curtain-bar {
+      background-color: #080808;
+      height: 5%;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  .ripple-wrapper {
+    position: fixed;
+
+    .ripple {
+      display: block;
+      width: 180px;
+      height: 180px;
+      border-radius: 120px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-color: rgba(#9e9e9e, 0.4);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(10);
+      transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+
+      &-enter {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0);
+      }
     }
   }
 }
