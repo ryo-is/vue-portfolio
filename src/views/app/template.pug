@@ -5,24 +5,30 @@ v-app
       prominent dense absolute elevate-on-scroll scroll-target=".main-content"
     )
       v-toolbar-items.hidden-sm-and-down
-        v-btn(
+        v-btn.font-weight-bold(
           v-for="item in toolbarItems", :key="item.text"
           :color="changeLinkButtonProps(item.link, 'color')"
           :text="changeLinkButtonProps(item.link, 'text')"
           dark depressed width=160 @click="linkPage(item.link)") {{ item.text }}
+      v-spacer
+      v-toolbar-items.hidden-sm-and-down
+        a.header-icon.mr-5(href="https://twitter.com/is_ryo" target="_blank" rel="noopener noreferrer")
+          v-icon mdi-twitter
+        a.header-icon(href="https://github.com/ryo-is" target="_blank" rel="noopener noreferrer")
+          v-icon mdi-github-circle
   v-content.main-content.overflow-y-auto
     .content-wrapper(@click="onClick")
       transition(appear name="page-transition")
         router-view
     .blackout-curtain.wrapper
-      //- transition-group(appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
-      //-   .curtain-bar(v-for="n of 10" :key="n" :data-index="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + '%'}")
-      //- transition-group(appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
-      //-   .curtain-bar(v-for="n of 10" :key="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
-      transition(v-for="n of 10" :key="n" appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
-        .curtain-bar(v-if="blackoutCurtain" :data-index="n" :style="{top: (n - 1) * 10 + '%'}")
-      transition(v-for="n of 10" :key="n" appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
-        .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
+      transition-group(appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
+        .curtain-bar(v-for="n of 10" :key="n" :data-index="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + '%'}")
+      transition-group(appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
+        .curtain-bar(v-for="n of 10" :key="n" v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
+      //- transition(v-for="n of 10" :key="n" appear name="blackout-curtain" @after-enter="blackoutCurtainAfterEnter")
+      //-   .curtain-bar(v-if="blackoutCurtain" :data-index="n" :style="{top: (n - 1) * 10 + '%'}")
+      //- transition(v-for="n of 10" :key="n" appear name="blackout-curtain-after" @after-enter="blackoutCurtainAfterEnter")
+      //-   .curtain-bar(v-if="blackoutCurtain" :style="{top: (n - 1) * 10 + 5 + '%'}")
     .ripple-wrapper.wrapper.overflow-y-hidden
       transition(appear name="ripple" @after-enter="rippleAfterEnter")
         span.ripple(v-if="ripple", :style="{top: y + 'px', left: x + 'px'}")

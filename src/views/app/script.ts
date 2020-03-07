@@ -48,13 +48,8 @@ export default Vue.extend({
         router.push(linkPath)
       }
     },
-    blackoutCurtainAfterEnter(el: HTMLElement) {
-      const delay = Number(el.dataset.index as string) * 1000
-      console.log(delay)
-      setTimeout(() => {
-        this.blackoutCurtain = false
-      }, delay)
-      // this.blackoutCurtain = false
+    blackoutCurtainAfterEnter() {
+      this.blackoutCurtain = false
     },
     blackoutCurtainLeave() {
       console.log('leave')
