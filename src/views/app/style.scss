@@ -34,7 +34,7 @@ body {
     @mixin pageTransition($enterDelay: 0s) {
       &-enter-active,
       &-leave-active {
-        transition: opacity 0.5s ease $enterDelay;
+        transition: opacity 0.3s ease $enterDelay;
       }
 
       &-enter,
