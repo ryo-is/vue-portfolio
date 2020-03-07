@@ -18,6 +18,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 
+  .header-icon {
+    padding-top: 9px;
+    text-decoration: none;
+  }
+
   .main-content {
     height: calc(100vh - 54px);
     position: relative;
